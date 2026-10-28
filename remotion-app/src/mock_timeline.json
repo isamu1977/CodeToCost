@@ -1,0 +1,391 @@
+{
+  "version": 1,
+  "videoId": "001-n8n-vs-make-scale",
+  "title": "n8n vs Make (2026): The Real Cost at 100,000 Operations",
+  "fps": 30,
+  "width": 1920,
+  "height": 1080,
+  "durationInFrames": 1800,
+  "brand": {
+    "name": "CodeToCost",
+    "tagline": "Clear Architecture, Real Math, Zero Fluff."
+  },
+  "scenes": [
+    {
+      "id": "scene-01-title",
+      "startFrame": 0,
+      "durationInFrames": 150,
+      "type": "title",
+      "props": {
+        "kind": "title",
+        "kicker": "CodeToCost · Cost Engineering",
+        "title": "n8n vs Make: the real cost at scale",
+        "subtitle": "Architecture, pricing and operating cost — with the math, not the hype.",
+        "highlight": "Self-hosted wins past 250k operations/month"
+      }
+    },
+    {
+      "id": "scene-02-spec",
+      "startFrame": 150,
+      "durationInFrames": 450,
+      "type": "spec-comparison",
+      "props": {
+        "kind": "spec-comparison",
+        "title": "Six criteria, three platforms",
+        "subtitle": "Entry price is just the start — the total cost of ownership lives in operations.",
+        "columns": [
+          {
+            "id": "n8n",
+            "name": "n8n",
+            "price": "$0 + infra",
+            "accent": "emerald",
+            "badge": "LOWEST TCO",
+            "highlighted": true
+          },
+          {
+            "id": "make",
+            "name": "Make",
+            "price": "$16/mo",
+            "accent": "cyan",
+            "badge": "SIMPLEST"
+          },
+          {
+            "id": "zapier",
+            "name": "Zapier",
+            "price": "$69/mo",
+            "accent": "rose",
+            "badge": "MOST EXPENSIVE"
+          }
+        ],
+        "rows": [
+          { "key": "entry", "label": "Entry price", "emphasize": true },
+          { "key": "selfhost", "label": "Self-hosting" },
+          { "key": "billing", "label": "Billing unit", "emphasize": true },
+          { "key": "queue", "label": "Durable queue" },
+          { "key": "code", "label": "Custom code" },
+          { "key": "audit", "label": "Audit & retry" }
+        ],
+        "values": {
+          "entry": {
+            "n8n": { "status": "check", "label": "$0 + VPS", "note": "infra only" },
+            "make": { "status": "check", "label": "$16/mo" },
+            "zapier": { "status": "check", "label": "$69/mo" }
+          },
+          "selfhost": {
+            "n8n": { "status": "check", "label": "Native" },
+            "make": { "status": "cross", "label": "Not available" },
+            "zapier": { "status": "cross", "label": "Not available" }
+          },
+          "billing": {
+            "n8n": { "status": "check", "label": "Per workflow run" },
+            "make": { "status": "warning", "label": "Per module step", "note": "credits" },
+            "zapier": { "status": "cross", "label": "Per module step", "note": "premium tasks" }
+          },
+          "queue": {
+            "n8n": { "status": "warning", "label": "Bring your own", "note": "BullMQ / Redis" },
+            "make": { "status": "check", "label": "Native" },
+            "zapier": { "status": "warning", "label": "Basic" }
+          },
+          "code": {
+            "n8n": { "status": "check", "label": "Full Node / Python" },
+            "make": { "status": "cross", "label": "Limited" },
+            "zapier": { "status": "cross", "label": "Limited" }
+          },
+          "audit": {
+            "n8n": { "status": "check", "label": "Full control" },
+            "make": { "status": "check", "label": "Full control" },
+            "zapier": { "status": "warning", "label": "Limited logs" }
+          }
+        },
+        "footerNote": "At 250k operations/month, self-hosted delivers the lowest total cost."
+      }
+    },
+    {
+      "id": "scene-03-cost",
+      "startFrame": 600,
+      "durationInFrames": 480,
+      "type": "cost-chart",
+      "props": {
+        "kind": "cost-chart",
+        "title": "Where the cost explodes",
+        "subtitle": "Projected monthly cost by traffic volume.",
+        "unit": "USD/month",
+        "highlightSeries": "n8n (self-hosted)",
+        "tiers": [
+          {
+            "label": "10k",
+            "operations": 10000,
+            "values": [
+              { "name": "n8n (self-hosted)", "value": 12, "accent": "emerald" },
+              { "name": "Make", "value": 11, "accent": "cyan" },
+              { "name": "Zapier", "value": 21, "accent": "rose" }
+            ]
+          },
+          {
+            "label": "50k",
+            "operations": 50000,
+            "values": [
+              { "name": "n8n (self-hosted)", "value": 12, "accent": "emerald" },
+              { "name": "Make", "value": 53, "accent": "cyan" },
+              { "name": "Zapier", "value": 120, "accent": "rose" }
+            ]
+          },
+          {
+            "label": "250k",
+            "operations": 250000,
+            "highlight": true,
+            "values": [
+              { "name": "n8n (self-hosted)", "value": 18, "accent": "emerald" },
+              { "name": "Make", "value": 212, "accent": "cyan" },
+              { "name": "Zapier", "value": 690, "accent": "rose" }
+            ]
+          }
+        ],
+        "footerNote": "Make is cheaper at 10k — and roughly 12x more expensive at 250k operations."
+      }
+    },
+    {
+      "id": "scene-04-arch",
+      "startFrame": 1080,
+      "durationInFrames": 390,
+      "type": "architecture",
+      "props": {
+        "kind": "architecture",
+        "title": "The architecture I recommend",
+        "subtitle": "Webhook → queue → worker → Postgres, with APIs kept at the edge.",
+        "nodes": [
+          {
+            "id": "webhook",
+            "label": "Webhook",
+            "sublabel": "POST /events",
+            "kind": "webhook",
+            "x": 180,
+            "y": 310
+          },
+          {
+            "id": "gateway",
+            "label": "API Gateway",
+            "sublabel": "rate limit + auth",
+            "kind": "api",
+            "x": 490,
+            "y": 140
+          },
+          {
+            "id": "queue",
+            "label": "Queue",
+            "sublabel": "Redis / BullMQ",
+            "kind": "queue",
+            "x": 490,
+            "y": 480
+          },
+          {
+            "id": "worker",
+            "label": "Worker",
+            "sublabel": "n8n / Node",
+            "kind": "vps",
+            "x": 800,
+            "y": 310
+          },
+          {
+            "id": "postgres",
+            "label": "Postgres",
+            "sublabel": "state + audit trail",
+            "kind": "database",
+            "x": 1110,
+            "y": 180
+          },
+          {
+            "id": "storage",
+            "label": "Object Storage",
+            "sublabel": "S3 / MinIO",
+            "kind": "storage",
+            "x": 1110,
+            "y": 450
+          },
+          {
+            "id": "externals",
+            "label": "Third-party APIs",
+            "sublabel": "LLM / Payments",
+            "kind": "api",
+            "x": 1400,
+            "y": 310
+          }
+        ],
+        "edges": [
+          { "from": "webhook", "to": "gateway", "label": "HTTPS" },
+          { "from": "webhook", "to": "queue", "label": "HTTPS" },
+          { "from": "gateway", "to": "worker", "label": "enqueue" },
+          { "from": "queue", "to": "worker", "label": "consume", "dashed": true },
+          { "from": "worker", "to": "postgres", "label": "SQL" },
+          { "from": "worker", "to": "storage", "label": "blob" },
+          { "from": "worker", "to": "externals", "label": "HTTP" }
+        ],
+        "footerNote": "Every block is cheap to operate — and every step is auditable."
+      }
+    },
+    {
+      "id": "scene-05-outro",
+      "startFrame": 1470,
+      "durationInFrames": 330,
+      "type": "outro",
+      "props": {
+        "kind": "outro",
+        "title": "Predictable cost is architecture, not promotion.",
+        "subtitle": "Next: the real cost spreadsheet for a production automation.",
+        "highlight": "CodeToCost · Clear Architecture, Real Math, Zero Fluff.",
+        "cta": "Subscribe for the next breakdown"
+      }
+    }
+  ],
+  "words": [
+    { "word": "Today", "start": 0.3, "end": 0.62 },
+    { "word": "we're", "start": 0.62, "end": 0.94 },
+    { "word": "going", "start": 0.94, "end": 1.26 },
+    { "word": "to", "start": 1.26, "end": 1.5 },
+    { "word": "compare", "start": 1.5, "end": 1.95 },
+    { "word": "n8n", "start": 1.95, "end": 2.27 },
+    { "word": "and", "start": 2.27, "end": 2.57 },
+    { "word": "Make", "start": 2.57, "end": 2.95 },
+    { "word": "at", "start": 2.95, "end": 3.2 },
+    { "word": "the", "start": 3.2, "end": 3.45 },
+    { "word": "same", "start": 3.45, "end": 3.85 },
+    { "word": "production", "start": 3.85, "end": 4.3 },
+    { "word": "volume.", "start": 4.3, "end": 4.9 },
+    { "word": "Six", "start": 5.2, "end": 5.5 },
+    { "word": "criteria", "start": 5.5, "end": 5.95 },
+    { "word": "decide", "start": 5.95, "end": 6.3 },
+    { "word": "who", "start": 6.3, "end": 6.55 },
+    { "word": "wins.", "start": 6.55, "end": 7.0 },
+    { "word": "Self-hosted", "start": 7.35, "end": 7.9 },
+    { "word": "on", "start": 7.9, "end": 8.15 },
+    { "word": "a", "start": 8.15, "end": 8.35 },
+    { "word": "VPS", "start": 8.35, "end": 8.7 },
+    { "word": "is", "start": 8.7, "end": 8.9 },
+    { "word": "not", "start": 8.9, "end": 9.2 },
+    { "word": "free,", "start": 9.2, "end": 9.6 },
+    { "word": "and", "start": 9.6, "end": 9.85 },
+    { "word": "managed", "start": 9.85, "end": 10.35 },
+    { "word": "n8n", "start": 10.35, "end": 10.65 },
+    { "word": "costs", "start": 10.65, "end": 11.05 },
+    { "word": "a", "start": 11.05, "end": 11.2 },
+    { "word": "lot", "start": 11.2, "end": 11.5 },
+    { "word": "more.", "start": 11.5, "end": 11.9 },
+    { "word": "Here", "start": 12.1, "end": 12.45 },
+    { "word": "is", "start": 12.45, "end": 12.65 },
+    { "word": "the", "start": 12.65, "end": 12.9 },
+    { "word": "cost", "start": 12.9, "end": 13.25 },
+    { "word": "exploding", "start": 13.25, "end": 13.8 },
+    { "word": "as", "start": 13.8, "end": 14.05 },
+    { "word": "you", "start": 14.05, "end": 14.3 },
+    { "word": "pass", "start": 14.3, "end": 14.65 },
+    { "word": "fifty", "start": 14.65, "end": 15.05 },
+    { "word": "thousand", "start": 15.05, "end": 15.55 },
+    { "word": "operations.", "start": 15.55, "end": 16.1 },
+    { "word": "Make", "start": 16.6, "end": 16.95 },
+    { "word": "and", "start": 16.95, "end": 17.2 },
+    { "word": "Zapier", "start": 17.2, "end": 17.6 },
+    { "word": "bill", "start": 17.6, "end": 17.9 },
+    { "word": "you", "start": 17.9, "end": 18.15 },
+    { "word": "per", "start": 18.15, "end": 18.4 },
+    { "word": "operation.", "start": 18.4, "end": 18.95 },
+    { "word": "Self-hosted", "start": 19.25, "end": 19.8 },
+    { "word": "n8n", "start": 19.8, "end": 20.1 },
+    { "word": "bills", "start": 20.1, "end": 20.45 },
+    { "word": "you", "start": 20.45, "end": 20.7 },
+    { "word": "for", "start": 20.7, "end": 20.95 },
+    { "word": "the", "start": 20.95, "end": 21.2 },
+    { "word": "machine.", "start": 21.2, "end": 21.75 },
+    { "word": "The", "start": 22.15, "end": 22.4 },
+    { "word": "architecture", "start": 22.4, "end": 22.95 },
+    { "word": "I", "start": 22.95, "end": 23.1 },
+    { "word": "recommend", "start": 23.1, "end": 23.7 },
+    { "word": "is", "start": 23.7, "end": 23.85 },
+    { "word": "webhook,", "start": 23.85, "end": 24.35 },
+    { "word": "queue,", "start": 24.35, "end": 24.7 },
+    { "word": "worker,", "start": 24.7, "end": 25.15 },
+    { "word": "and", "start": 25.15, "end": 25.4 },
+    { "word": "Postgres.", "start": 25.4, "end": 26.0 },
+    { "word": "Every", "start": 26.55, "end": 26.95 },
+    { "word": "block", "start": 26.95, "end": 27.3 },
+    { "word": "is", "start": 27.3, "end": 27.45 },
+    { "word": "cheap", "start": 27.45, "end": 27.9 },
+    { "word": "to", "start": 27.9, "end": 28.1 },
+    { "word": "run.", "start": 28.1, "end": 28.5 },
+    { "word": "The", "start": 28.7, "end": 28.95 },
+    { "word": "problem", "start": 28.95, "end": 29.4 },
+    { "word": "shows", "start": 29.4, "end": 29.75 },
+    { "word": "up", "start": 29.75, "end": 29.95 },
+    { "word": "when", "start": 29.95, "end": 30.25 },
+    { "word": "you", "start": 30.25, "end": 30.5 },
+    { "word": "scale.", "start": 30.5, "end": 30.95 },
+    { "word": "If", "start": 31.25, "end": 31.5 },
+    { "word": "you", "start": 31.5, "end": 31.75 },
+    { "word": "need", "start": 31.75, "end": 32.05 },
+    { "word": "audit", "start": 32.05, "end": 32.45 },
+    { "word": "trails,", "start": 32.45, "end": 32.9 },
+    { "word": "retries,", "start": 32.9, "end": 33.35 },
+    { "word": "and", "start": 33.35, "end": 33.6 },
+    { "word": "durable", "start": 33.6, "end": 34.05 },
+    { "word": "queues,", "start": 34.05, "end": 34.5 },
+    { "word": "Make", "start": 34.5, "end": 34.85 },
+    { "word": "wins", "start": 34.85, "end": 35.2 },
+    { "word": "on", "start": 35.2, "end": 35.4 },
+    { "word": "paper.", "start": 35.4, "end": 35.9 },
+    { "word": "The", "start": 36.1, "end": 36.35 },
+    { "word": "real", "start": 36.35, "end": 36.65 },
+    { "word": "cost", "start": 36.65, "end": 36.95 },
+    { "word": "shows", "start": 36.95, "end": 37.3 },
+    { "word": "up", "start": 37.3, "end": 37.5 },
+    { "word": "in", "start": 37.5, "end": 37.65 },
+    { "word": "the", "start": 37.65, "end": 37.9 },
+    { "word": "pricing", "start": 37.9, "end": 38.4 },
+    { "word": "table,", "start": 38.4, "end": 38.85 },
+    { "word": "not", "start": 38.85, "end": 39.1 },
+    { "word": "on", "start": 39.1, "end": 39.3 },
+    { "word": "the", "start": 39.3, "end": 39.55 },
+    { "word": "landing", "start": 39.55, "end": 40.1 },
+    { "word": "page.", "start": 40.1, "end": 40.6 },
+    { "word": "If", "start": 40.8, "end": 41.05 },
+    { "word": "you", "start": 41.05, "end": 41.3 },
+    { "word": "are", "start": 41.3, "end": 41.55 },
+    { "word": "comparing", "start": 41.55, "end": 42.15 },
+    { "word": "plans,", "start": 42.15, "end": 42.55 },
+    { "word": "ask", "start": 42.55, "end": 42.85 },
+    { "word": "for", "start": 42.85, "end": 43.05 },
+    { "word": "the", "start": 43.05, "end": 43.3 },
+    { "word": "per-operation", "start": 43.3, "end": 44.0 },
+    { "word": "breakdown", "start": 44.0, "end": 44.55 },
+    { "word": "before", "start": 44.55, "end": 44.9 },
+    { "word": "you", "start": 44.9, "end": 45.15 },
+    { "word": "sign.", "start": 45.15, "end": 45.6 },
+    { "word": "That", "start": 45.8, "end": 46.05 },
+    { "word": "is", "start": 46.05, "end": 46.2 },
+    { "word": "what", "start": 46.2, "end": 46.45 },
+    { "word": "separates", "start": 46.45, "end": 47.0 },
+    { "word": "cheap", "start": 47.0, "end": 47.4 },
+    { "word": "automation", "start": 47.4, "end": 48.0 },
+    { "word": "from", "start": 48.0, "end": 48.2 },
+    { "word": "technical", "start": 48.2, "end": 48.75 },
+    { "word": "debt.", "start": 48.75, "end": 49.25 },
+    { "word": "Next", "start": 49.5, "end": 49.85 },
+    { "word": "video:", "start": 49.85, "end": 50.25 },
+    { "word": "we", "start": 50.25, "end": 50.5 },
+    { "word": "tear", "start": 50.5, "end": 50.85 },
+    { "word": "apart", "start": 50.85, "end": 51.3 },
+    { "word": "the", "start": 51.3, "end": 51.55 },
+    { "word": "real", "start": 51.55, "end": 51.85 },
+    { "word": "cost", "start": 51.85, "end": 52.15 },
+    { "word": "spreadsheet", "start": 52.15, "end": 52.8 },
+    { "word": "of", "start": 52.8, "end": 53.0 },
+    { "word": "a", "start": 53.0, "end": 53.15 },
+    { "word": "production", "start": 53.15, "end": 53.6 },
+    { "word": "stack.", "start": 53.6, "end": 54.1 },
+    { "word": "Subscribe", "start": 54.3, "end": 54.8 },
+    { "word": "so", "start": 54.8, "end": 55.0 },
+    { "word": "you", "start": 55.0, "end": 55.25 },
+    { "word": "do", "start": 55.25, "end": 55.45 },
+    { "word": "not", "start": 55.45, "end": 55.7 },
+    { "word": "miss", "start": 55.7, "end": 56.0 },
+    { "word": "it.", "start": 56.0, "end": 56.4 }
+  ]
+}

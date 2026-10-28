@@ -18,7 +18,7 @@ import {
   useVideoConfig,
 } from 'remotion';
 import React, { useEffect, useMemo, useState } from 'react';
-import manifest from '../public/manifest.json';
+import manifest from '../../public/manifest.json';
 import { TitleOverlay } from './TitleOverlay';
 import { CinematicOpeningTitle } from './CinematicOpeningTitle';
 
