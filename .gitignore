@@ -2,24 +2,48 @@
 # CodeToCost — .gitignore
 # Canal B2B: Arquitetura de Automação, SaaS & IA (en-US)
 # Regra de ouro: NUNCA versionar segredos, mídia gerada ou estado de runtime.
+#
+# Ordem importa: as regras de negação (linha iniciada por `!`) DEVEM vir
+# depois das regras que pretendeam reverter. Git aplica a ÚLTIMA regra
+# que casar com o caminho.
 # ═══════════════════════════════════════════════════════════════════════════
 
 # ── SEGREDOS (nunca commitar) ──────────────────────────────────────────────
 .env
-.env.*
-!.env.example
+**/.env
+*.env*
+pipeline/core/.env
+token.json
+client_secret.json
+client_secret*.json
+credentials*.json
+service-account*.json
 *.pem
 *.key
-client_secret*.json
-token.json
-credentials*.json
+id_rsa
+id_ed25519
+.pypirc
 .npmrc
+
+# Streamlit / ferramentas locais podem guardar credenciais fora do `.env`
+.streamlit/secrets.toml
+**/secrets.toml
+
+# Re-inclusões explícitas: o template de ambiente É versionado.
+# (mantidas abaixo de `*.env*` para que tenham prioridade)
+!.env.example
+!**/.env.example
+!**/.env.sample
 
 # ── Node / Remotion ────────────────────────────────────────────────────────
 node_modules/
+remotion-app/node_modules/
 dist/
 build/
+remotion-app/build/
 out/
+remotion-app/out/
+remotion-app/remotion-output/
 .npm
 npm-debug.log*
 yarn-debug.log*
@@ -28,7 +52,9 @@ yarn-error.log*
 
 # ── Python ─────────────────────────────────────────────────────────────────
 __pycache__/
+**/__pycache__/
 *.py[cod]
+*.pyc
 *$py.class
 .venv/
 venv/
@@ -42,6 +68,7 @@ env/
 
 # ── Cache de modelos ML (pesado; re-baixável) ──────────────────────────────
 .hf_cache/
+pipeline/.hf_cache/
 hub/
 models--*/
 .cache/
@@ -72,9 +99,19 @@ models--*/
 *.log
 
 # ── Saída de render e assets por projeto ───────────────────────────────────
-projects/*/output/
-projects/*/03_audio/
-projects/*/04_assets/
+# SOMENTE o conteúdo é ignorado; o diretório em si permanece versionável
+# para que o `.gitkeep` possa ser re-incluído.
+projects/**/03_audio/*
+!projects/**/03_audio/.gitkeep
+projects/**/output/*
+!projects/**/output/.gitkeep
+projects/**/04_assets/*
+!projects/**/04_assets/.gitkeep
+
+# Timeline/props gerados pelo pipeline (a fonte é 02_spec/video_spec.json)
+projects/**/timeline.json
+projects/**/render_props.json
+
 storage/
 assets_library/
 music_library/
@@ -107,3 +144,6 @@ Thumbs.db
 .idea/
 .vscode/
 *.swp
+
+# ── Tooling local ─────────────────────────────────────────────────────────
+.playwright-mcp/
