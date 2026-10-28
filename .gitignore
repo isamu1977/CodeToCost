@@ -1,0 +1,109 @@
+# ═══════════════════════════════════════════════════════════════════════════
+# CodeToCost — .gitignore
+# Canal B2B: Arquitetura de Automação, SaaS & IA (en-US)
+# Regra de ouro: NUNCA versionar segredos, mídia gerada ou estado de runtime.
+# ═══════════════════════════════════════════════════════════════════════════
+
+# ── SEGREDOS (nunca commitar) ──────────────────────────────────────────────
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+client_secret*.json
+token.json
+credentials*.json
+.npmrc
+
+# ── Node / Remotion ────────────────────────────────────────────────────────
+node_modules/
+dist/
+build/
+out/
+.npm
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# ── Python ─────────────────────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+env/
+.venv-kokoro/
+.python-version
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+*.egg-info/
+
+# ── Cache de modelos ML (pesado; re-baixável) ──────────────────────────────
+.hf_cache/
+hub/
+models--*/
+.cache/
+.keras/
+.torch/
+
+# ── Mídia gerada pelo pipeline ─────────────────────────────────────────────
+*.wav
+*.mp3
+*.mp4
+*.mov
+*.avi
+*.mkv
+*.flac
+*.m4a
+*.png
+*.jpg
+*.jpeg
+*.webp
+*.gif
+*.svg.tmp
+
+# ── Estado de runtime / bancos ─────────────────────────────────────────────
+*.db
+*.db-journal
+*.sqlite
+*.sqlite3
+*.log
+
+# ── Saída de render e assets por projeto ───────────────────────────────────
+projects/*/output/
+projects/*/03_audio/
+projects/*/04_assets/
+storage/
+assets_library/
+music_library/
+blog_articles/
+post_kits/
+pinterest_queue/
+
+# ── Backups e transitórios ─────────────────────────────────────────────────
+*.bak
+*.prev
+*.orig
+*.rej
+*.tmp
+*.temp
+*~
+.~lock.*
+_v1_*/
+_v2_*/
+_v3_*/
+
+# ── OS / IDE ───────────────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+.agent/
+.agents/
+.gemini/
+.opencode/
+.qwen/
+.cursor/
+.idea/
+.vscode/
+*.swp

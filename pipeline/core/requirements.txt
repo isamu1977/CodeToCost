@@ -1,0 +1,42 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# Phase 2 deps added: qwen-tts, soundfile, torch.
+#
+# IMPORTANT: `torch` is intentionally left version-pinned to ">=2.5.0" only.
+# Do NOT add a strict pin here — the right wheel depends on your platform:
+#   • macOS Apple Silicon (MPS):  pip install torch               (no CUDA wheel)
+#   • Linux + NVIDIA CUDA 11.8:  pip install torch --index-url https://download.pytorch.org/whl/cu118
+#   • Linux + NVIDIA CUDA 12.4:  pip install torch --index-url https://download.pytorch.org/whl/cu124
+# We let pip resolve whatever wheel matches the runtime.
+# ─────────────────────────────────────────────────────────────────────────────
+
+# Web server (versions aligned with hermes-agent runtime, no forced upgrade)
+fastapi>=0.118.0
+uvicorn[standard]>=0.32.0
+pydantic>=2.10.3
+
+# DB
+sqlalchemy>=2.0.36
+
+# HTTP client (Wikimedia API, OpenRouter)
+requests>=2.32.3
+python-dotenv>=1.0.1
+
+# Scraping — Pillow for image dimensions (used inside scraper.py)
+Pillow>=10.0.0
+
+# TTS (Phase 2: Qwen3-TTS CustomVoice on MPS)
+qwen-tts>=0.1.1
+soundfile>=0.12.1
+# torch is heavy; user must install the right wheel. Uncomment one of:
+#   pip install torch                                  # default (MPS-friendly on macOS)
+#   pip install torch --index-url https://download.pytorch.org/whl/cu118   # Linux CUDA 11.8
+#   pip install torch --index-url https://download.pytorch.org/whl/cu124   # Linux CUDA 12.4
+
+# Transcription (Phase 4: faster-whisper for word-level timestamps)
+# Pulls ctranslate2 + av as transitive deps. CPU int8 is fast enough
+# on Apple Silicon for narration (0.07x realtime with the base model).
+faster-whisper>=1.2.0
+
+# Blog output (Phase 6: frontmatter parsing for blog_articles/*.md)
+# Standard YAML for header validation; PyYAML is bundled with the env.
+PyYAML>=6.0

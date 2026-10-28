@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Noto+Serif+JP:wght@700;900&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { width: 1280px; height: 720px; overflow: hidden; background: #070707; font-family: 'Cinzel', serif; }
+    .canvas { width: 1280px; height: 720px; position: relative; }
+    .bg-image { position: absolute; top: 0; right: 0; width: 75%; height: 100%; object-fit: cover; filter: contrast(115%) brightness(85%); }
+    .red-sun-glow { position: absolute; top: 12%; right: 18%; width: 420px; height: 420px; background: radial-gradient(circle, rgba(168, 24, 24, 0.85) 0%, rgba(138, 14, 14, 0.35) 60%, transparent 75%); border-radius: 50%; mix-blend-mode: screen; }
+    .scrim-left { position: absolute; inset: 0; background: linear-gradient(90deg, rgba(5,5,5,0.98) 0%, rgba(5,5,5,0.92) 38%, rgba(5,5,5,0.45) 62%, transparent 85%); z-index: 2; }
+    .vignette { position: absolute; inset: 0; box-shadow: inset 0 0 100px rgba(0,0,0,0.9); z-index: 3; }
+    .channel-logo-badge {
+      position: absolute;
+      top: 40px;
+      left: 65px;
+      z-index: 5;
+      background: #ffffff;
+      border-radius: 14px;
+      padding: 8px 10px;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.75), 0 0 0 1px rgba(255, 255, 255, 0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .channel-logo-img {
+      height: 72px;
+      width: auto;
+      object-fit: contain;
+      display: block;
+    }
+    .content { position: absolute; inset: 0; z-index: 4; display: flex; flex-direction: column; justify-content: center; padding-left: 65px; max-width: 680px; }
+    .kicker { display: inline-flex; align-items: center; gap: 10px; font-size: 20px; letter-spacing: 4px; color: #bc2626; font-weight: 700; text-transform: uppercase; margin-bottom: 12px; }
+    .kicker::before { content: ""; width: 28px; height: 3px; background: #bc2626; }
+    .headline { font-size: 76px; line-height: 0.95; font-weight: 900; text-transform: uppercase; color: #f7f4ed; text-shadow: 0 4px 20px rgba(0,0,0,0.9); }
+    .headline .highlight { color: #e53935; display: block; }
+  </style>
+</head>
+<body>
+  <div class="canvas">
+    <img class="bg-image" src="{{IMAGE_SRC}}" alt="Background">
+    <div class="red-sun-glow"></div>
+    <div class="scrim-left"></div>
+    <div class="vignette"></div>
+    <div class="channel-logo-badge">
+      <img class="channel-logo-img" src="{{LOGO_SRC}}" alt="Red Sun Japan">
+    </div>
+    <div class="content">
+      <div class="kicker">{{KICKER}}</div>
+      <h1 class="headline">
+        {{HEADLINE_LINE1}}
+        <span class="highlight">{{HEADLINE_HIGHLIGHT}}</span>
+      </h1>
+    </div>
+  </div>
+</body>
+</html>

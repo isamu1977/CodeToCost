@@ -1,0 +1,26 @@
+{
+  "kofi": {
+    "label": "Support the Archive (Buy a Tea)",
+    "url": "https://ko-fi.com/redsunjapan"
+  },
+  "shop_printify": {
+    "label": "Official Art Prints & Puzzles (Printify)",
+    "url": "https://red-sun-japan.printify.me/"
+  },
+  "instagram": {
+    "label": "Instagram",
+    "url": "https://www.instagram.com/redsunjapan_official/"
+  },
+  "pinterest": {
+    "label": "Pinterest",
+    "url": "https://jp.pinterest.com/redsunjapan/"
+  },
+  "twitter_x": {
+    "label": "X / Twitter",
+    "url": "https://x.com/redsunjapan"
+  },
+  "website": {
+    "label": "Official Chronicles (Blog)",
+    "url": "https://redsunjapan.com"
+  }
+}

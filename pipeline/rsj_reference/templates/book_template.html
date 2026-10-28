@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ book_title }}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;800&family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Noto+Serif+JP:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* ==========================================================================
+       THE FEUDAL ARCHIVAL FOLIO — OFFICIAL 6x9" KDP / KO-FI EDITORIAL TEMPLATE
+       ========================================================================== */
+
+    @page {
+      size: 6in 9in;
+      margin: 0.85in 0.75in 0.85in 0.75in;
+      @top-center {
+        content: "RED SUN JAPAN ARCHIVES";
+        font-family: 'Cinzel', serif;
+        font-size: 7.5pt;
+        letter-spacing: 0.18em;
+        color: #78716c;
+      }
+      @bottom-center {
+        content: counter(page);
+        font-family: 'Cinzel', serif;
+        font-size: 8.5pt;
+        color: #1c1917;
+      }
+    }
+
+    @page :first {
+      @top-center { content: normal; }
+      @bottom-center { content: normal; }
+    }
+
+    * {
+      box-sizing: border-box;
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      background-color: #f7f4ed;
+      color: #1c1917;
+      font-family: 'EB Garamond', Garamond, 'Georgia', serif;
+      font-size: 11pt;
+      line-height: 1.62;
+      text-rendering: optimizeLegibility;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Cover / Half-Title / Title Page */
+    .page-break {
+      page-break-before: always;
+      break-before: page;
+    }
+
+    .title-page {
+      min-height: 7.3in;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
+      text-align: center;
+      padding: 1.5in 0.5in 0.5in 0.5in;
+      page-break-after: always;
+      break-after: page;
+    }
+
+    .title-banner-top {
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      font-family: 'Cinzel', serif;
+      font-size: 10pt;
+      color: #9e1b1b;
+      margin-bottom: 2rem;
+    }
+
+    .book-main-title {
+      font-family: 'Cinzel', serif;
+      font-size: 26pt;
+      font-weight: 700;
+      line-height: 1.25;
+      color: #1c1917;
+      margin: 0 0 1rem 0;
+      letter-spacing: 0.04em;
+    }
+
+    .book-subtitle {
+      font-family: 'EB Garamond', serif;
+      font-size: 14pt;
+      font-style: italic;
+      color: #57534e;
+      margin: 0 0 2rem 0;
+    }
+
+    .title-seal {
+      margin: 2rem auto;
+    }
+
+    .title-footer {
+      font-family: 'Cinzel', serif;
+      font-size: 8.5pt;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: #78716c;
+    }
+
+    /* Table of Contents */
+    .toc-page {
+      padding: 0.5in 0;
+      page-break-before: always;
+      page-break-after: always;
+      break-before: page;
+      break-after: page;
+    }
+
+    .toc-title {
+      font-family: 'Cinzel', serif;
+      font-size: 18pt;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-align: center;
+      color: #1c1917;
+      margin-bottom: 0.5rem;
+      text-transform: uppercase;
+    }
+
+    .toc-divider {
+      width: 45px;
+      height: 2px;
+      background-color: #9e1b1b;
+      margin: 0 auto 2.5rem auto;
+    }
+
+    .toc-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .toc-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      padding: 0.75rem 0;
+      border-bottom: 1px dotted #d6d3d1;
+      font-family: 'Cinzel', serif;
+      font-size: 10.5pt;
+    }
+
+    .toc-item-title {
+      font-weight: 600;
+      color: #1c1917;
+      text-decoration: none;
+    }
+
+    .toc-item-roman {
+      color: #9e1b1b;
+      margin-right: 0.5rem;
+    }
+
+    /* Foreword */
+    .foreword-page {
+      page-break-before: always;
+      break-before: page;
+      margin-bottom: 2rem;
+    }
+
+    /* Chapter Layout */
+    .chapter-container {
+      page-break-before: always;
+      break-before: page;
+      margin-bottom: 3rem;
+    }
+
+    .chapter-header {
+      text-align: center;
+      margin-top: 0.5in;
+      margin-bottom: 2rem;
+      page-break-inside: avoid;
+      break-inside: avoid;
+    }
+
+    /* Red Hanko Seal */
+    .hanko-seal {
+      display: inline-block;
+      border: 1.5px solid #9e1b1b;
+      border-radius: 3px;
+      padding: 3px 9px;
+      margin-bottom: 1.25rem;
+      color: #9e1b1b;
+      font-family: 'Noto Serif JP', serif;
+      font-size: 8pt;
+      font-weight: 700;
+      letter-spacing: 0.22em;
+      background-color: rgba(158, 27, 27, 0.04);
+      text-transform: uppercase;
+    }
+
+    .chapter-number {
+      font-family: 'Cinzel', serif;
+      font-size: 11pt;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: #9e1b1b;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+
+    .chapter-title {
+      font-family: 'Cinzel', serif;
+      font-size: 19pt;
+      font-weight: 700;
+      line-height: 1.3;
+      color: #1c1917;
+      margin: 0 0 0.5rem 0;
+      letter-spacing: 0.02em;
+    }
+
+    .chapter-subtitle-ja {
+      font-family: 'Noto Serif JP', serif;
+      font-size: 12pt;
+      color: #78716c;
+      letter-spacing: 0.15em;
+      margin-bottom: 1.25rem;
+    }
+
+    .archival-rule {
+      width: 50px;
+      height: 2px;
+      background-color: #9e1b1b;
+      margin: 1.25rem auto 0 auto;
+    }
+
+    /* Archival Provenance Box */
+    .provenance-box {
+      border-left: 3px solid #9e1b1b;
+      border-top: 1px solid #e7e2d6;
+      border-right: 1px solid #e7e2d6;
+      border-bottom: 1px solid #e7e2d6;
+      background: rgba(231, 226, 214, 0.45);
+      padding: 1.15rem 1.25rem;
+      margin: 1.75rem 0 2.25rem 0;
+      border-radius: 2px;
+      page-break-inside: avoid;
+      break-inside: avoid;
+    }
+
+    .provenance-header {
+      font-family: 'Cinzel', serif;
+      font-size: 8.5pt;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      color: #9e1b1b;
+      margin-bottom: 0.6rem;
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .provenance-header::before {
+      content: "❖";
+      font-size: 7.5pt;
+    }
+
+    .provenance-content {
+      font-size: 9.75pt;
+      line-height: 1.58;
+      color: #292524;
+    }
+
+    .provenance-content p {
+      margin: 0.5rem 0;
+    }
+
+    .provenance-content p:first-of-type {
+      margin-top: 0;
+    }
+
+    /* Dramatic Crimson Drop Cap */
+    .chapter-body > p:first-of-type::first-letter,
+    .drop-cap::first-letter {
+      float: left;
+      font-family: 'Cinzel', serif;
+      font-size: 3.5rem;
+      line-height: 0.8;
+      margin-right: 0.55rem;
+      margin-top: 0.15rem;
+      color: #9e1b1b;
+      font-weight: 700;
+    }
+
+    .chapter-body p {
+      text-align: justify;
+      text-indent: 1.5em;
+      margin: 0;
+    }
+
+    .chapter-body p:first-of-type {
+      text-indent: 0;
+    }
+
+    .chapter-body h3,
+    .chapter-body h4 {
+      font-family: 'Cinzel', serif;
+      font-size: 12pt;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      color: #1c1917;
+      text-align: center;
+      margin: 2.25rem 0 1rem 0;
+      page-break-after: avoid;
+      break-after: avoid;
+    }
+
+    /* Traditional Scene Break */
+    .scene-break {
+      text-align: center;
+      color: #9e1b1b;
+      letter-spacing: 0.6em;
+      font-size: 10pt;
+      margin: 2rem 0;
+      page-break-inside: avoid;
+      break-inside: avoid;
+      user-select: none;
+    }
+
+    /* Art Plates */
+    .art-plate {
+      margin: 2.25rem auto;
+      text-align: center;
+      page-break-inside: avoid;
+      break-inside: avoid;
+      max-width: 100%;
+    }
+
+    .art-plate img {
+      max-width: 100%;
+      max-height: 4.6in;
+      border-radius: 2px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.14);
+      border: 1px solid #dcd6c8;
+      display: block;
+      margin: 0 auto;
+    }
+
+    .art-plate figcaption {
+      font-family: 'EB Garamond', serif;
+      font-size: 9pt;
+      font-style: italic;
+      color: #57534e;
+      margin-top: 0.6rem;
+      line-height: 1.4;
+      padding: 0 0.5in;
+    }
+
+    /* Section Headings */
+    .section-heading {
+      font-family: 'Cinzel', serif;
+      font-size: 13pt;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      color: #9e1b1b;
+      text-align: center;
+      margin: 2.75rem 0 1.25rem 0;
+      text-transform: uppercase;
+      page-break-after: avoid;
+      break-after: avoid;
+    }
+
+    /* Historical Footnotes Section */
+    .footnotes-section {
+      margin-top: 2.5rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid #d6d3d1;
+      page-break-inside: avoid;
+    }
+
+    .footnotes-body {
+      font-size: 9.5pt;
+      line-height: 1.55;
+      color: #292524;
+    }
+
+    .footnotes-body p {
+      margin: 0.75rem 0;
+      text-align: justify;
+      text-indent: 0;
+    }
+
+    .footnotes-body strong {
+      color: #9e1b1b;
+      font-family: 'Cinzel', serif;
+      font-size: 9pt;
+      letter-spacing: 0.04em;
+    }
+
+    /* Cultural Glossary (2-Column Grid) */
+    .glossary-section {
+      margin-top: 2rem;
+      padding-top: 1.5rem;
+      page-break-inside: avoid;
+    }
+
+    .glossary-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.25rem 1.5rem;
+      margin-top: 1.25rem;
+    }
+
+    .glossary-entry {
+      page-break-inside: avoid;
+      break-inside: avoid;
+      font-size: 9.25pt;
+      line-height: 1.45;
+    }
+
+    .glossary-term {
+      font-family: 'Cinzel', serif;
+      font-weight: 700;
+      color: #9e1b1b;
+      font-size: 9.25pt;
+      letter-spacing: 0.04em;
+    }
+
+    .glossary-reading {
+      color: #78716c;
+      font-style: italic;
+      font-size: 8.5pt;
+      margin-left: 0.25rem;
+    }
+
+    .glossary-def {
+      margin: 0.25rem 0 0 0;
+      color: #292524;
+      text-align: justify;
+    }
+
+    /* Editorial Colophon (Okuzuke - 奥付) */
+    .colophon-page {
+      page-break-before: always;
+      break-before: page;
+      min-height: 7.2in;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 1in 0.5in 0.5in 0.5in;
+    }
+
+    .colophon-box {
+      max-width: 4.8in;
+      border: 1px solid #d6d3d1;
+      padding: 2rem 2rem 1.5rem 2rem;
+      background: rgba(255, 255, 255, 0.4);
+      border-radius: 2px;
+    }
+
+    .colophon-title {
+      font-family: 'Cinzel', serif;
+      font-size: 13pt;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      color: #1c1917;
+      margin: 1rem 0;
+    }
+
+    .colophon-meta {
+      font-size: 9pt;
+      line-height: 1.6;
+      color: #44403c;
+      margin: 1.25rem 0;
+      text-align: left;
+    }
+
+    .colophon-meta p {
+      margin: 0.35rem 0;
+    }
+
+    .colophon-meta strong {
+      color: #1c1917;
+      font-family: 'Cinzel', serif;
+      font-size: 8.5pt;
+      letter-spacing: 0.04em;
+      display: inline-block;
+      width: 1.6in;
+    }
+
+    .colophon-qr {
+      margin: 1.5rem auto 1rem auto;
+      text-align: center;
+    }
+
+    .colophon-qr svg {
+      border: 1px solid #d6d3d1;
+      padding: 4px;
+      background: #ffffff;
+      border-radius: 4px;
+    }
+
+    .colophon-qr-caption {
+      font-family: 'Cinzel', serif;
+      font-size: 7.5pt;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #78716c;
+      margin-top: 0.4rem;
+    }
+
+    .colophon-legal {
+      font-size: 8pt;
+      line-height: 1.5;
+      color: #78716c;
+      margin-top: 1.5rem;
+      border-top: 1px dotted #d6d3d1;
+      padding-top: 1rem;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ========================================================================
+       1. TITLE PAGE
+       ======================================================================== -->
+  <div class="title-page">
+    <div>
+      <div class="title-banner-top">Red Sun Japan Archives • Volume {{ volume }}</div>
+      <h1 class="book-main-title">{{ book_title }}</h1>
+      {% if subtitle %}
+      <div class="book-subtitle">{{ subtitle }}</div>
+      {% endif %}
+      <div class="title-seal">
+        <div class="hanko-seal">怪談 • 史実記録</div>
+      </div>
+    </div>
+
+    <div class="title-footer">
+      <div>Red Sun Japan Publishing</div>
+      <div style="font-size: 7.5pt; margin-top: 0.3rem;">Tokyo • Kyoto • Worldwide</div>
+    </div>
+  </div>
+
+  <!-- ========================================================================
+       2. TABLE OF CONTENTS
+       ======================================================================== -->
+  <div class="toc-page">
+    <div class="toc-title">Table of Contents</div>
+    <div class="toc-divider"></div>
+    <ul class="toc-list">
+      {% if foreword_html %}
+      <li class="toc-item">
+        <span class="toc-item-title"><span class="toc-item-roman">❖</span> Archival Preface</span>
+      </li>
+      {% endif %}
+      {% for ch in chapters %}
+      <li class="toc-item">
+        <span class="toc-item-title">
+          <span class="toc-item-roman">{{ ch.chapter_num_roman }}</span>
+          {{ ch.clean_title }}
+        </span>
+      </li>
+      {% endfor %}
+      <li class="toc-item">
+        <span class="toc-item-title"><span class="toc-item-roman">❖</span> Editorial Colophon (奥付)</span>
+      </li>
+    </ul>
+  </div>
+
+  <!-- ========================================================================
+       3. OPTIONAL FOREWORD
+       ======================================================================== -->
+  {% if foreword_html %}
+  <div class="foreword-page">
+    <div class="chapter-header">
+      <div class="hanko-seal">巻頭言 • PREFACE</div>
+      <div class="chapter-number">Archival Preface</div>
+      <h1 class="chapter-title">Shadows of the Floating World</h1>
+      <div class="archival-rule"></div>
+    </div>
+    <div class="chapter-body drop-cap">
+      {{ foreword_html | safe }}
+    </div>
+  </div>
+  {% endif %}
+
+  <!-- ========================================================================
+       4. CHAPTERS
+       ======================================================================== -->
+  {% for ch in chapters %}
+  <section class="chapter-container" id="chapter-{{ loop.index }}">
+    <!-- Header -->
+    <div class="chapter-header">
+      <div class="hanko-seal">怪談 • 史実記録</div>
+      <div class="chapter-number">{{ ch.chapter_num_roman }}</div>
+      <h1 class="chapter-title">{{ ch.clean_title }}</h1>
+      {% if ch.subtitle_ja %}
+      <div class="chapter-subtitle-ja">{{ ch.subtitle_ja }}</div>
+      {% endif %}
+      <div class="archival-rule"></div>
+    </div>
+
+    <!-- Archival Provenance Box -->
+    {% if ch.provenance_html %}
+    <div class="provenance-box">
+      <div class="provenance-header">Archival Provenance & Historical Context</div>
+      <div class="provenance-content">
+        {{ ch.provenance_html | safe }}
+      </div>
+    </div>
+    {% endif %}
+
+    <!-- Chapter Body & Art Plates -->
+    <div class="chapter-body">
+      {{ ch.body_html | safe }}
+    </div>
+
+    <!-- Historical Footnotes -->
+    {% if ch.footnotes_html %}
+    <div class="footnotes-section">
+      <h2 class="section-heading">Historical Footnotes & Archival Analysis</h2>
+      <div class="footnotes-body">
+        {{ ch.footnotes_html | safe }}
+      </div>
+    </div>
+    {% endif %}
+
+    <!-- Cultural Glossary -->
+    {% if ch.glossary_items %}
+    <div class="glossary-section">
+      <h2 class="section-heading">Cultural Glossary</h2>
+      <div class="glossary-grid">
+        {% for item in ch.glossary_items %}
+        <div class="glossary-entry">
+          <span class="glossary-term">{{ item.term }}</span>
+          {% if item.reading %}<span class="glossary-reading">({{ item.reading }})</span>{% endif %}
+          <p class="glossary-def">{{ item.definition }}</p>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    {% endif %}
+  </section>
+  {% endfor %}
+
+  <!-- ========================================================================
+       5. EDITORIAL COLOPHON (OKUZUKE - 奥付)
+       ======================================================================== -->
+  <div class="colophon-page">
+    <div class="colophon-box">
+      <div class="hanko-seal">奥付 • RED SUN JAPAN</div>
+      <h2 class="colophon-title">{{ book_title }}</h2>
+
+      <div class="colophon-meta">
+        <p><strong>Series:</strong> Chronicles of the Red Sun</p>
+        <p><strong>Volume:</strong> Volume {{ volume }}</p>
+        <p><strong>Publisher:</strong> Red Sun Japan Archives</p>
+        <p><strong>Curator & Lead:</strong> JingJing (Chief Historical Curator)</p>
+        <p><strong>Production:</strong> Red Sun Japan Studio</p>
+        <p><strong>Format:</strong> 6" x 9" US Trade Collector's Edition</p>
+        <p><strong>Archival Postings:</strong> <span style="font-family: monospace; font-size: 8.5pt;">https://redsunjapan.com</span></p>
+        <p><strong>Patron Support:</strong> <span style="font-family: monospace; font-size: 8.5pt;">https://ko-fi.com/redsunjapan</span></p>
+      </div>
+
+      <div class="colophon-qr">
+        <!-- SVG Stylized QR Code pointing to https://ko-fi.com/redsunjapan -->
+        <svg width="84" height="84" viewBox="0 0 100 100" fill="#1c1917">
+          <rect width="100" height="100" fill="#ffffff"/>
+          <!-- Position Detection Patterns Top-Left -->
+          <rect x="10" y="10" width="24" height="24" fill="#9e1b1b"/>
+          <rect x="14" y="14" width="16" height="16" fill="#ffffff"/>
+          <rect x="18" y="18" width="8" height="8" fill="#9e1b1b"/>
+          <!-- Position Detection Patterns Top-Right -->
+          <rect x="66" y="10" width="24" height="24" fill="#9e1b1b"/>
+          <rect x="70" y="14" width="16" height="16" fill="#ffffff"/>
+          <rect x="74" y="18" width="8" height="8" fill="#9e1b1b"/>
+          <!-- Position Detection Patterns Bottom-Left -->
+          <rect x="10" y="66" width="24" height="24" fill="#9e1b1b"/>
+          <rect x="14" y="70" width="16" height="16" fill="#ffffff"/>
+          <rect x="18" y="74" width="8" height="8" fill="#9e1b1b"/>
+          <!-- Decorative Data Matrix Elements -->
+          <rect x="38" y="12" width="6" height="6"/>
+          <rect x="48" y="12" width="6" height="6"/>
+          <rect x="42" y="22" width="6" height="6"/>
+          <rect x="52" y="22" width="6" height="6"/>
+          <rect x="12" y="42" width="6" height="6"/>
+          <rect x="22" y="42" width="6" height="6"/>
+          <rect x="38" y="38" width="8" height="8" fill="#9e1b1b"/>
+          <rect x="54" y="38" width="8" height="8"/>
+          <rect x="38" y="54" width="8" height="8"/>
+          <rect x="54" y="54" width="8" height="8" fill="#9e1b1b"/>
+          <rect x="70" y="42" width="6" height="6"/>
+          <rect x="80" y="42" width="6" height="6"/>
+          <rect x="70" y="52" width="6" height="6"/>
+          <rect x="80" y="52" width="6" height="6"/>
+          <rect x="40" y="72" width="6" height="6"/>
+          <rect x="50" y="72" width="6" height="6"/>
+          <rect x="44" y="82" width="6" height="6"/>
+          <rect x="54" y="82" width="6" height="6"/>
+          <rect x="72" y="72" width="6" height="6"/>
+          <rect x="82" y="72" width="6" height="6"/>
+          <rect x="76" y="82" width="6" height="6"/>
+          <rect x="86" y="82" width="6" height="6"/>
+        </svg>
+        <div class="colophon-qr-caption">Scan to Buy the Archive a Tea on Ko-fi</div>
+      </div>
+
+      <div class="colophon-legal">
+        © 2026 Red Sun Japan Archives. All rights reserved.<br>
+        Published under the Feudal Archival Folio preservation series.<br>
+        Printed on archival quality paper.
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>

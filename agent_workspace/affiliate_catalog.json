@@ -1,0 +1,132 @@
+{
+  "_comment": "CodeToCost — affiliate catalog. Links are filled in ONLY after Isamu is approved for each program. Never invent an affiliate URL; leave status as 'pending' until the real link exists.",
+  "version": "1.0.0",
+  "updated": "2026-10-28",
+  "programs": {
+    "hostinger_vps": {
+      "display_name": "Hostinger VPS",
+      "category": "infrastructure",
+      "status": "pending",
+      "url": "",
+      "commission": "one-time, high value",
+      "cta": "Deploy this exact architecture on a high-performance VPS",
+      "notes": "Primary infrastructure affiliate for self-hosting videos."
+    },
+    "digitalocean": {
+      "display_name": "DigitalOcean",
+      "category": "infrastructure",
+      "status": "pending",
+      "url": "",
+      "commission": "one-time",
+      "cta": "Spin up a droplet in 60 seconds",
+      "notes": ""
+    },
+    "hetzner": {
+      "display_name": "Hetzner Cloud",
+      "category": "infrastructure",
+      "status": "pending",
+      "url": "",
+      "commission": "one-time",
+      "cta": "Best price-to-performance VPS in the EU",
+      "notes": ""
+    },
+    "make_com": {
+      "display_name": "Make.com",
+      "category": "automation",
+      "status": "pending",
+      "url": "",
+      "commission": "recurring up to 20% for 24 months",
+      "cta": "Try Make Pro with free operations",
+      "notes": "Recurring commission — highest long-term value."
+    },
+    "n8n_cloud": {
+      "display_name": "n8n Cloud",
+      "category": "automation",
+      "status": "pending",
+      "url": "",
+      "commission": "recurring",
+      "cta": "Skip the self-hosting and start on n8n Cloud",
+      "notes": ""
+    },
+    "zapier": {
+      "display_name": "Zapier",
+      "category": "automation",
+      "status": "pending",
+      "url": "",
+      "commission": "recurring",
+      "cta": "",
+      "notes": ""
+    },
+    "supabase": {
+      "display_name": "Supabase",
+      "category": "database",
+      "status": "pending",
+      "url": "",
+      "commission": "recurring",
+      "cta": "Managed Postgres with auth and storage included",
+      "notes": ""
+    },
+    "firecrawl": {
+      "display_name": "Firecrawl",
+      "category": "scraping",
+      "status": "pending",
+      "url": "",
+      "commission": "recurring",
+      "cta": "Turn any site into clean LLM-ready markdown",
+      "notes": ""
+    },
+    "apify": {
+      "display_name": "Apify",
+      "category": "scraping",
+      "status": "pending",
+      "url": "",
+      "commission": "recurring",
+      "cta": "",
+      "notes": ""
+    },
+    "openrouter": {
+      "display_name": "OpenRouter",
+      "category": "ai_api",
+      "status": "pending",
+      "url": "",
+      "commission": "credit-based",
+      "cta": "One API key for every frontier model",
+      "notes": ""
+    },
+    "elevenlabs": {
+      "display_name": "ElevenLabs",
+      "category": "ai_audio",
+      "status": "pending",
+      "url": "",
+      "commission": "recurring",
+      "cta": "",
+      "notes": ""
+    }
+  },
+  "own_products": {
+    "architecture_vault_single": {
+      "display_name": "Production-Ready Architecture Pack (single video)",
+      "price_usd": 19,
+      "platform": "lemonsqueezy_or_gumroad",
+      "status": "pending",
+      "url": "",
+      "notes": "Docker Compose + Traefik SSL + Postgres backups + workflows."
+    },
+    "architecture_vault_bundle": {
+      "display_name": "The Architecture Vault (full library)",
+      "price_usd": 49,
+      "platform": "lemonsqueezy_or_gumroad",
+      "status": "pending",
+      "url": "",
+      "notes": "All diagrams, cost calculators and code templates."
+    },
+    "cost_calculator_lead_magnet": {
+      "display_name": "The SaaS vs Self-Hosted Cost Calculator",
+      "price_usd": 0,
+      "platform": "email_capture",
+      "status": "pending",
+      "url": "",
+      "notes": "Free lead magnet in exchange for email."
+    }
+  }
+}
