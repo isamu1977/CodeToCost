@@ -1,42 +1,61 @@
 # ─────────────────────────────────────────────────────────────────────────────
-# Phase 2 deps added: qwen-tts, soundfile, torch.
+# CodeToCost — Python dependencies (pipeline/core)
 #
-# IMPORTANT: `torch` is intentionally left version-pinned to ">=2.5.0" only.
-# Do NOT add a strict pin here — the right wheel depends on your platform:
-#   • macOS Apple Silicon (MPS):  pip install torch               (no CUDA wheel)
+# Install into pipeline/core/.venv:
+#   python3 -m venv .venv && source .venv/bin/activate
+#   pip install -r requirements.txt
+#
+# IMPORTANT: `torch` is intentionally NOT strictly pinned. The correct wheel
+# depends on the platform:
+#   • macOS Apple Silicon (MPS): pip install torch          (default, no CUDA)
 #   • Linux + NVIDIA CUDA 11.8:  pip install torch --index-url https://download.pytorch.org/whl/cu118
 #   • Linux + NVIDIA CUDA 12.4:  pip install torch --index-url https://download.pytorch.org/whl/cu124
-# We let pip resolve whatever wheel matches the runtime.
+# Let pip resolve the wheel that matches the runtime.
 # ─────────────────────────────────────────────────────────────────────────────
 
-# Web server (versions aligned with hermes-agent runtime, no forced upgrade)
+# ── Web server ──────────────────────────────────────────────────────────────
 fastapi>=0.118.0
 uvicorn[standard]>=0.32.0
 pydantic>=2.10.3
 
-# DB
+# ── Database ────────────────────────────────────────────────────────────────
 sqlalchemy>=2.0.36
 
-# HTTP client (Wikimedia API, OpenRouter)
+# ── HTTP / config ───────────────────────────────────────────────────────────
 requests>=2.32.3
-python-dotenv>=1.0.1
+httpx>=0.27.0            # async streaming for the StepFun/MiniMax TTS clients
+python-dotenv>=1.0.1     # loads pipeline/core/.env
 
-# Scraping — Pillow for image dimensions (used inside scraper.py)
-Pillow>=10.0.0
+# ── Numerics ────────────────────────────────────────────────────────────────
+numpy>=1.26.0            # imported at module level by tts_engine.py
+scipy>=1.11.0            # audio resampling in the resilient TTS fallback chain
 
-# TTS (Phase 2: Qwen3-TTS CustomVoice on MPS)
-qwen-tts>=0.1.1
-soundfile>=0.12.1
-# torch is heavy; user must install the right wheel. Uncomment one of:
-#   pip install torch                                  # default (MPS-friendly on macOS)
-#   pip install torch --index-url https://download.pytorch.org/whl/cu118   # Linux CUDA 11.8
-#   pip install torch --index-url https://download.pytorch.org/whl/cu124   # Linux CUDA 12.4
+# ── TTS ─────────────────────────────────────────────────────────────────────
+soundfile>=0.12.1        # WAV I/O (16-bit PCM) — imported at module level
+qwen-tts>=0.1.1          # Qwen3-TTS CustomVoice (alternative local engine)
+kokoro>=0.1.0            # Kokoro-82M local engine (contingency / offline)
+# torch is heavy and platform-specific — install the right wheel for your machine:
+#   pip install torch                                    # macOS / CPU
+#   pip install torch --index-url https://download.pytorch.org/whl/cu118
 
-# Transcription (Phase 4: faster-whisper for word-level timestamps)
-# Pulls ctranslate2 + av as transitive deps. CPU int8 is fast enough
-# on Apple Silicon for narration (0.07x realtime with the base model).
+# ── Transcription ───────────────────────────────────────────────────────────
+# faster-whisper for word-level timestamps. Pulls ctranslate2 + av as
+# transitive deps. CPU int8 is fast enough on Apple Silicon for narration
+# (~0.07x realtime with the base model); MPS is used when available.
 faster-whisper>=1.2.0
 
-# Blog output (Phase 6: frontmatter parsing for blog_articles/*.md)
-# Standard YAML for header validation; PyYAML is bundled with the env.
-PyYAML>=6.0
+# ── NLP (phonetic normalization) ────────────────────────────────────────────
+# Kokoro pulls spaCy + en_core_web_sm at runtime for grapheme/phoneme
+# segmentation. Install the model explicitly after `pip install -r`:
+#
+#   python -m spacy download en_core_web_sm
+#
+# Or pin it as a package dependency instead:
+#   pip install https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-3.8.0/en_core_web_sm-3.8.0-py3-none-any.whl
+spacy>=3.7.0
+
+# ── Scraping / assets ───────────────────────────────────────────────────────
+Pillow>=10.0.0           # image dimensions (scraper.py)
+
+# ── Output formats ──────────────────────────────────────────────────────────
+PyYAML>=6.0              # blog frontmatter parsing/validation

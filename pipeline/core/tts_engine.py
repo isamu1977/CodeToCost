@@ -342,13 +342,14 @@ def generate_tts(
     # Strip markdown symbols that TTS engines read literally
     text = _sanitize_for_tts(text)
 
-    # Apply phonetic pronunciation map for Japanese entities (Edo -> Eh-doh, etc.)
-    # Keeps script_en.md authentic on disk while Kokoro/MiniMax receives phonetically guided text
-    try:
-        from redsun.services.pronunciation import apply_pronunciation_map
-        text = apply_pronunciation_map(text, slug=slug)
-    except Exception as exc:
-        logger.warning("Failed to apply pronunciation map in generate_tts: %s", exc)
+    # Apply phonetic normalization: canonical term map + CodeToCost channel
+    # dictionary (acronyms, currency, scale numbers). Keeps scripts authentic on
+    # disk while the TTS engine receives phonetically guided text.
+    # Local module — decoupled from the redsun package. Imported at call time so
+    # a failure here is loud instead of silently skipping normalization.
+    from pronunciation import apply_pronunciation_map
+
+    text = apply_pronunciation_map(text, slug=slug)
 
     active_engine = (provider or engine or os.environ.get("TTS_PROVIDER") or os.environ.get("TTS_ENGINE", "stepfun")).lower().strip()
 
