@@ -1,0 +1,78 @@
+{
+  "_comment": "StepFun StepAudio 2.5 system voices available to the CodeToCost channel. Source of truth: https://platform.stepfun.ai/docs/en/api-reference/audio/system-voices (GET https://api.stepfun.ai/v1/audio/system_voices?model=stepaudio-2.5-tts). 'english: true' marks the voices purpose-built for the English B2B channel.",
+  "model": "stepaudio-2.5-tts",
+  "source": "https://platform.stepfun.ai/docs/en/api-reference/audio/system-voices",
+  "default_voice_id": "soft-spoken-gentleman",
+  "voices": [
+    {
+      "id": "magnetic-voiced-male",
+      "name": "Magnetic-voiced Male",
+      "gender": "male",
+      "english": true,
+      "description": "Deep, magnetic male voice (English); strong calm and weight.",
+      "recommended_scene": "Audiobook, video dubbing",
+      "channel_fit": "high",
+      "notes": "Analytical and technical; the deepest option for a senior-engineer narrator."
+    },
+    {
+      "id": "soft-spoken-gentleman",
+      "name": "Soft-spoken Gentleman",
+      "gender": "male",
+      "english": true,
+      "description": "Calm, gentle male voice (English); reassuring and steady.",
+      "recommended_scene": "Emotional companionship, audiobook",
+      "channel_fit": "medium",
+      "notes": "Official channel voice. Softer and more intimate; good for explainers."
+    },
+    {
+      "id": "vibrant-youth",
+      "name": "Vibrant Youth",
+      "gender": "male",
+      "english": true,
+      "description": "Warm, approachable young male voice (English).",
+      "recommended_scene": "Audiobook, video dubbing, voice assistant",
+      "channel_fit": "medium",
+      "notes": "Approachable and energetic; reads acronyms faster but loses gravitas."
+    },
+    {
+      "id": "lively-girl",
+      "name": "Lively Girl",
+      "gender": "female",
+      "english": true,
+      "description": "Bright, lively female voice (English); personable and energetic.",
+      "recommended_scene": "Audiobook, video dubbing, voice assistant",
+      "channel_fit": "medium",
+      "notes": "Only female English system voice; usable for channel variation, less on-brand for the analyst persona."
+    },
+    {
+      "id": "zixinnansheng",
+      "name": "Confident Male",
+      "gender": "male",
+      "english": false,
+      "description": "Confident male voice; sincere, warm, energetic.",
+      "recommended_scene": "Audiobook, emotional companionship, education, marketing",
+      "channel_fit": "low",
+      "notes": "Mandarin-tuned system voice; kept as a fallback only."
+    },
+    {
+      "id": "elegantgentle-female",
+      "name": "Elegant, gentle female",
+      "gender": "female",
+      "english": false,
+      "description": "Sincere, reassuring female voice.",
+      "recommended_scene": "Customer service, voice-over, education",
+      "channel_fit": "low",
+      "notes": "Mandarin-tuned system voice; kept as a fallback only."
+    },
+    {
+      "id": "livelybreezy-female",
+      "name": "Light, breezy female",
+      "gender": "female",
+      "english": false,
+      "description": "Engaging, persuasive female voice.",
+      "recommended_scene": "Emotional companionship, education, marketing",
+      "channel_fit": "low",
+      "notes": "Mandarin-tuned system voice; kept as a fallback only."
+    }
+  ]
+}

@@ -1,0 +1,39 @@
+{
+  "_note": "Temporary spec used for the audio-injection verification (15s render test). The full episode script is still pending — this file carries the opening narration plus a visual-only outro so the timeline lands on ~15s.",
+  "video_id": "001-n8n-vs-make-scale",
+  "title": "n8n vs Make (2026): The Real Cost at 100,000 Operations",
+  "language": "en-US",
+  "brand": {
+    "name": "CodeToCost",
+    "tagline": "Clear Architecture, Real Math, Zero Fluff."
+  },
+  "scenes": [
+    {
+      "scene_id": "scene-01-title",
+      "spoken_text": "Welcome to CodeToCost. Today we analyze the real inflection point between n8n and Make dot com.",
+      "display_subtitle": "The real inflection point between n8n and Make.com",
+      "visual_component": "title",
+      "voice": "soft-spoken-gentleman",
+      "component_props": {
+        "kind": "title",
+        "kicker": "CodeToCost · Cost Engineering",
+        "title": "n8n vs Make: the real cost at scale",
+        "subtitle": "Architecture, pricing and operating cost — with the math, not the hype.",
+        "highlight": "Self-hosted wins past 250k operations/month"
+      }
+    },
+    {
+      "scene_id": "scene-02-outro",
+      "duration_sec": 7.09,
+      "display_subtitle": "Full teardown in the next episode",
+      "visual_component": "outro",
+      "component_props": {
+        "kind": "outro",
+        "title": "Next: the 100k operations breakdown",
+        "subtitle": "Infrastructure, execution cost and the exact crossing point.",
+        "cta": "Subscribe for the full model",
+        "highlight": "No hype. Just the math."
+      }
+    }
+  ]
+}

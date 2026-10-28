@@ -1,0 +1,19 @@
+# CodeToCost — Streamlit configuration
+#
+# Picked up automatically by `streamlit run pipeline/dashboard.py` when the
+# command runs from the repository root (see run_dashboard.sh).
+# The palette mirrors remotion-app/src/theme.ts.
+
+[theme]
+base = "dark"
+primaryColor = "#06B6D4"
+backgroundColor = "#0B0F19"
+secondaryBackgroundColor = "#111827"
+textColor = "#E5E7EB"
+font = "sans serif"
+
+[server]
+headless = true
+
+[browser]
+gatherUsageStats = false

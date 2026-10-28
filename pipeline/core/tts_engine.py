@@ -16,12 +16,19 @@ from __future__ import annotations
 import logging
 import os
 import re
+import sys
 import time
 from dataclasses import dataclass
 from pathlib import Path
 
 import numpy as np
 import soundfile as sf
+
+# Make the core modules importable regardless of the caller's working directory
+# (tts_engine, pronunciation and stepfun_client live side by side here).
+_CORE_DIR = Path(__file__).resolve().parent
+if str(_CORE_DIR) not in sys.path:
+    sys.path.insert(0, str(_CORE_DIR))
 
 logger = logging.getLogger("redsun.tts")
 
@@ -35,7 +42,13 @@ TTS_ENGINE = TTS_PROVIDER
 STEPFUN_API_KEY = os.environ.get("STEPFUN_API_KEY", "")
 STEPFUN_BASE_URL = os.environ.get("STEPFUN_BASE_URL", "https://api.stepfun.ai/step_plan/v1")
 STEPFUN_MODEL = os.environ.get("STEPFUN_MODEL", "stepaudio-2.5-tts")
-STEPFUN_DEFAULT_VOICE = os.environ.get("STEPFUN_VOICE", "magnetic-voiced-male")
+# Explicit channel voice. STEPFUN_VOICE_ID wins; STEPFUN_VOICE is the legacy alias.
+# "soft-spoken-gentleman" is the official voice of the CodeToCost channel.
+STEPFUN_DEFAULT_VOICE = (
+    os.environ.get("STEPFUN_VOICE_ID")
+    or os.environ.get("STEPFUN_VOICE")
+    or "soft-spoken-gentleman"
+)
 STEPFUN_SPEED = float(os.environ.get("STEPFUN_SPEED", "0.95"))
 
 # MiniMax Speech API config (used when TTS_PROVIDER="minimax")
@@ -190,8 +203,13 @@ def list_speakers(engine: str | None = None) -> list[str]:
     """Return the list of available speaker/voice names for the active engine."""
     active = (engine or os.environ.get("TTS_PROVIDER") or os.environ.get("TTS_ENGINE", "stepfun")).lower().strip()
     if active == "stepfun":
-        from redsun.services.stepfun_tts import STEPFUN_RECOMMENDED_VOICES
-        return list(STEPFUN_RECOMMENDED_VOICES)
+        from stepfun_client import english_voice_ids, load_voice_catalog
+
+        catalog = load_voice_catalog()
+        if catalog:
+            # Prefer the English system voices for the English B2B channel.
+            return english_voice_ids() or [v["id"] for v in catalog]
+        return [STEPFUN_DEFAULT_VOICE]
     elif active == "minimax":
         from redsun.services.minimax_tts import MINIMAX_RECOMMENDED_VOICES
         return list(MINIMAX_RECOMMENDED_VOICES)
@@ -377,19 +395,28 @@ def _generate_with_stepfun(
     instruct: str | None = None,
     speed: float | None = None,
 ) -> TTSResult:
-    """Generate audio using StepFun StepAudio with Tiered Fallback (Fish Audio -> Edge-TTS)."""
-    from redsun.services.resilient_tts import synthesize_chunk_waveform_with_fallback
+    """Generate audio using StepFun StepAudio with an Edge-TTS failsafe.
 
-    voice = speaker or os.environ.get("STEPFUN_VOICE") or STEPFUN_DEFAULT_VOICE
+    Voice precedence: explicit ``speaker`` > ``STEPFUN_VOICE_ID`` >
+    ``STEPFUN_VOICE`` > packaged default.
+    """
+    from stepfun_client import (
+        StepFunContentBlockedError,
+        resolve_voice_id,
+        synthesize_stepfun_chunk,
+    )
+
+    voice = resolve_voice_id(speaker)
     target_speed = speed if speed is not None else float(os.environ.get("STEPFUN_SPEED", str(STEPFUN_SPEED)))
     target_model = os.environ.get("STEPFUN_MODEL", STEPFUN_MODEL)
 
     logger.info(
-        "TTS run (StepFun with Tiered Fallback): %d chars → %d chunk(s); voice=%s; speed=%.2f",
+        "TTS run (StepFun): %d chars → %d chunk(s); voice=%s; speed=%.2f; model=%s",
         len(text),
         len(chunks),
         voice,
         target_speed,
+        target_model,
     )
 
     all_waves: list[np.ndarray] = []
@@ -400,12 +427,29 @@ def _generate_with_stepfun(
         if len(chunks) > 1:
             logger.info("Chunk %d/%d (%d chars)", idx, len(chunks), len(chunk))
         t0 = time.perf_counter()
-        waveform, sr, provider_used = synthesize_chunk_waveform_with_fallback(
-            chunk,
-            speed=target_speed,
-            slug=None,
-            preferred_engine="stepfun",
-        )
+        try:
+            waveform, sr = synthesize_stepfun_chunk(
+                chunk,
+                voice_id=voice,
+                speed=target_speed,
+                model=target_model,
+            )
+            provider_used = "stepfun"
+        except StepFunContentBlockedError:
+            logger.warning(
+                "StepFun blocked chunk %d (content moderation). Falling back to Edge-TTS.",
+                idx,
+            )
+            waveform, sr = _synthesize_edge_tts_chunk(chunk)
+            provider_used = "edgetts"
+        except Exception as exc:
+            logger.warning(
+                "StepFun failed on chunk %d (%s). Falling back to Edge-TTS.",
+                idx, exc,
+            )
+            waveform, sr = _synthesize_edge_tts_chunk(chunk)
+            provider_used = "edgetts"
+
         gen_s = time.perf_counter() - t0
         providers_used.append(provider_used)
         logger.info(
@@ -447,10 +491,45 @@ def _generate_with_stepfun(
         character_count=len(text),
         chunk_count=len(chunks),
         speaker=voice,
-        instruct=f"model={target_model}, speed={target_speed}",
+        instruct=(
+            f"model={target_model}, speed={target_speed}, "
+            f"providers={'/'.join(sorted(set(providers_used)))}"
+        ),
         language="en",
         model_id=target_model,
     )
+
+
+def _synthesize_edge_tts_chunk(
+    text: str, voice: str | None = None
+) -> tuple[np.ndarray, int]:
+    """Failsafe synthesis via Microsoft Edge-TTS (24 kHz mono)."""
+    import asyncio
+    import io
+
+    import edge_tts
+
+    voice = voice or os.environ.get("EDGE_TTS_VOICE") or "en-US-ChristopherNeural"
+
+    async def _synth() -> bytes:
+        comm = edge_tts.Communicate(text=text, voice=voice)
+        buf = bytearray()
+        async for chunk in comm.stream():
+            if chunk["type"] == "audio":
+                buf.extend(chunk["data"])
+        return bytes(buf)
+
+    audio_bytes = asyncio.run(_synth())
+    if not audio_bytes or len(audio_bytes) < 500:
+        raise RuntimeError(f"Edge-TTS returned no audio ({len(audio_bytes)} bytes)")
+
+    with io.BytesIO(audio_bytes) as bio:
+        waveform, sr = sf.read(bio, dtype="float32")
+
+    if waveform.ndim > 1:
+        waveform = np.mean(waveform, axis=1)
+
+    return waveform, sr
 
 
 

@@ -17,6 +17,9 @@
 fastapi>=0.118.0
 uvicorn[standard]>=0.32.0
 pydantic>=2.10.3
+# Local operator dashboard (projects, script audit, audio player, render trigger).
+# Run it with: ./run_dashboard.sh  (or `streamlit run pipeline/dashboard.py`).
+streamlit>=1.35.0
 
 # ── Database ────────────────────────────────────────────────────────────────
 sqlalchemy>=2.0.36
@@ -28,10 +31,11 @@ python-dotenv>=1.0.1     # loads pipeline/core/.env
 
 # ── Numerics ────────────────────────────────────────────────────────────────
 numpy>=1.26.0            # imported at module level by tts_engine.py
-scipy>=1.11.0            # audio resampling in the resilient TTS fallback chain
+scipy>=1.11.0            # audio resampling (vendored redsun reference fallback chain)
 
 # ── TTS ─────────────────────────────────────────────────────────────────────
 soundfile>=0.12.1        # WAV I/O (16-bit PCM) — imported at module level
+edge-tts>=6.1.0          # Edge-TTS failsafe when StepFun blocks/fails the text
 qwen-tts>=0.1.1          # Qwen3-TTS CustomVoice (alternative local engine)
 kokoro>=0.1.0            # Kokoro-82M local engine (contingency / offline)
 # torch is heavy and platform-specific — install the right wheel for your machine:
@@ -43,6 +47,10 @@ kokoro>=0.1.0            # Kokoro-82M local engine (contingency / offline)
 # transitive deps. CPU int8 is fast enough on Apple Silicon for narration
 # (~0.07x realtime with the base model); MPS is used when available.
 faster-whisper>=1.2.0
+# PyAV >= 16 removed the `metadata_errors` kwarg that faster-whisper's
+# decode_audio() still passes to av.open() -> TypeError at transcribe time.
+# Keep av on the 14.x/15.x line until faster-whisper drops the argument.
+av>=14,<16
 
 # ── NLP (phonetic normalization) ────────────────────────────────────────────
 # Kokoro pulls spaCy + en_core_web_sm at runtime for grapheme/phoneme
