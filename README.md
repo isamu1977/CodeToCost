@@ -153,6 +153,40 @@ npm run dev                # Remotion Studio preview
 
 ---
 
+## ⚡ Quickstart (Local Operator)
+
+With the setup above in place, these three commands cover the full operator
+loop: audit the script, preview the visuals, then ship the render.
+
+### 1. Launch the Operator Dashboard
+
+```bash
+./run_dashboard.sh
+# Accessible at http://localhost:8501
+```
+
+### 2. Preview Remotion Components in Real-Time
+
+```bash
+cd remotion-app
+npm install
+npx remotion preview
+# Accessible at http://localhost:3000
+```
+
+### 3. Build a Video via CLI
+
+```bash
+python pipeline/build_pipeline.py --project 001-n8n-vs-make-scale --render
+```
+
+> The CLI reads `pipeline/core/.env`, so run it with the virtualenv active
+> (`source pipeline/core/.venv/bin/activate`). Add `--force` to ignore the
+> TTS/Whisper caches, `--voice <id>` to override the narrator and
+> `--output <file>` to name the rendered MP4.
+
+---
+
 ## 🔐 Secrets & Repository Safety
 
 Real API keys (OpenRouter, StepFun, MiniMax, Gemini) live in `pipeline/core/.env`, which
